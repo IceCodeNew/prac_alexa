@@ -18,7 +18,7 @@ class AlexaPipeline(object):
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):
-        def getmytuple(rank: int, domain: str, desc: str):
+        def getmytuple(rank: str, domain: str, desc: str):
             tup = (rank, domain, desc)
             return tup
 
