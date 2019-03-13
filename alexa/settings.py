@@ -89,9 +89,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # Add by ICN
-MYSQL_HOST = "数据库地址，默认 localhost"
-MYSQL_PORT = 3306  # 数据库开放端口，默认 3306
-MYSQL_USER = "有权读写相应数据库的用户名"
-MYSQL_PASSWD = "用户名对应的密码"
-MYSQL_DB = "打算操作的数据库名"
-MYSQL_CHARSET = "建议建数据库的时候选择编码方式为 utf8mb4"
+FEED_EXPORT_ENCODING = 'utf-8'

@@ -11,33 +11,32 @@ from alexa.items import AlexaItem
 
 
 def getlist(selectorlist: scrapy.selector.unified.SelectorList):
-    pattern1 = re.compile(r"^\s+|$\s+|\\[rn]")
-    pattern2 = re.compile(r"\s{2,}")
+    pattern1 = re.compile(r'^\s+|\s+$|\\[rn]', re.MULTILINE)
+    pattern2 = re.compile(r'\s{2,}', re.MULTILINE)
 
-    tmp_list: List = selectorlist.xpath("string(.)").extract()
+    tmp_list: List = selectorlist.xpath('string(.)').extract()
     mylist = []
     for _ in tmp_list:
-        _ = re.sub(pattern1, "", "".join(_.split()))
-        mylist.append(re.sub(pattern2, " ", _))
+        mylist.append(pattern2.sub(' ', pattern1.sub(r'', _)))
     del tmp_list
     return mylist
 
 
 class AlexaSpider(scrapy.spiders.Spider):
-    name = "alexa"
-    allowed_domains = ["chinaz.com"]
+    name = 'alexa'
+    allowed_domains = ['chinaz.com']
 
-    start_urls = ["http://alexa.chinaz.com/Country/index_CN.html"]
+    start_urls = ['http://alexa.chinaz.com/Country/index_CN.html']
     for i in range(1, 20):
-        url = "http://alexa.chinaz.com/Country/index_CN_{index}.html".format(index=str(i + 1))
+        url = 'http://alexa.chinaz.com/Country/index_CN_{index}.html'''.format(index=str(i + 1))
         start_urls.append(url)
 
     def parse(self, response):
         item = AlexaItem()
 
-        clearfix = response.xpath("//li[@class='clearfix']")
-        item["rank"] = getlist(clearfix.xpath(".//div[@class='count']"))
-        item["domain"] = getlist(clearfix.xpath(".//span"))
-        item["desc"] = getlist(clearfix.xpath(".//p[@class='']"))
+        clearfix = response.xpath('//li[@class="clearfix"]')
+        item['rank'] = getlist(clearfix.xpath('.//div[@class="count"]'))
+        item['domain'] = getlist(clearfix.xpath('.//span'))
+        item['desc'] = getlist(clearfix.xpath('.//p[@class=""]'))
 
         return item
