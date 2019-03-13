@@ -13,11 +13,12 @@ from alexa.items import AlexaItem
 def getlist(selectorlist: scrapy.selector.unified.SelectorList):
     pattern1 = re.compile(r'^\s+|\s+$|\\[rn]', re.MULTILINE)
     pattern2 = re.compile(r'\s{2,}', re.MULTILINE)
+    pattern3 = re.compile(r'\"{3,}', re.MULTILINE)
 
     tmp_list: List = selectorlist.xpath('string(.)').extract()
     mylist = []
     for _ in tmp_list:
-        mylist.append(pattern2.sub(' ', pattern1.sub(r'', _)))
+        mylist.append(pattern3.sub(r'""', pattern2.sub(r' ', pattern1.sub(r'', _.replace('"', '""')))))
     del tmp_list
     return mylist
 
