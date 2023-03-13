@@ -16,9 +16,12 @@ def getlist(selectorlist: scrapy.selector.unified.SelectorList):
     pattern3 = re.compile(r'\"{3,}', re.MULTILINE)
 
     tmp_list: List = selectorlist.xpath('string(.)').extract()
-    mylist = []
-    for _ in tmp_list:
-        mylist.append(pattern3.sub(r'""', pattern2.sub(r' ', pattern1.sub(r'', _.replace('"', '""')))))
+    mylist = [
+        pattern3.sub(
+            r'""', pattern2.sub(r' ', pattern1.sub(r'', _.replace('"', '""')))
+        )
+        for _ in tmp_list
+    ]
     del tmp_list
     return mylist
 
